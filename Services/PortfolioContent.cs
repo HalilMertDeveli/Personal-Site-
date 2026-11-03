@@ -286,8 +286,8 @@ public static class PortfolioContent
             Category = new("Mobil", "Mobile"),
             Tags = "mobile",
             Summary = new(
-                "Firebase Authentication (e-posta, Google, Apple), Firestore ve Storage kullanan, duyarlı yerleşimli Flutter kişisel finans uygulaması.",
-                "A Flutter personal finance app with Firebase Authentication (email, Google, Apple), Firestore, Storage and responsive layouts."),
+                "Kişisel finans uygulamasının başlangıcı: Flutter ile e-posta, Google ve Facebook girişi, Firestore'da kullanıcı profili. Finans ekranları tamamlanmadı.",
+                "The start of a personal finance app: email, Google and Facebook sign-in with Flutter and a user profile in Firestore. The finance screens were never finished."),
             Stack = ["Flutter", "Firebase Auth", "Firestore"],
             Glyph = "finance"
         },
