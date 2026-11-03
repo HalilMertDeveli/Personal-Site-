@@ -6,10 +6,9 @@
         ("backend", "Backend"),
         ("mobile", Model.T("Mobil", "Mobile")),
         ("web", "Web"),
-        ("led", "LED"),
-        ("learning", Model.T("Öğrenme", "Learning"))
+        ("led", "LED")
     };
-    var total = PortfolioContent.MoreProjects.Count + PortfolioContent.Archive.Count;
+    var total = PortfolioContent.MoreProjects.Count;
     var transition = 0;
 }
 <section id="projects" class="section" aria-labelledby="projects-title">
@@ -17,7 +16,7 @@
         <header class="section-head section-head--row" data-reveal>
             <div>
                 <p class="eyebrow"><span class="eyebrow__index">02</span>@Model.T("GitHub'daki diğer projeler", "More on GitHub")</p>
-                <h2 id="projects-title" class="section-title">@Model.T("Canlı siteler, demolar ve öğrenme yolculuğu", "Live sites, demos and the road here")</h2>
+                <h2 id="projects-title" class="section-title">@Model.T("Canlı siteler, demolar ve bitirme projem", "Live sites, demos and my capstone")</h2>
             </div>
             <a class="btn btn--text" href="@PortfolioContent.GitHubReposUrl" target="_blank" rel="noopener">
                 @Model.T("Tüm depolar", "All repositories") @Icons.ArrowUpRight
@@ -37,7 +36,7 @@
             {
                 var repo = Model.GitHub.Find(p.RepoName);
                 var repoUrl = repo?.Url ?? $"{PortfolioContent.GitHubUrl}/{p.RepoName}";
-                var mainUrl = p.Live?.Url ?? repoUrl;
+                var mainUrl = p.Live?.Url ?? (p.IsPrivate ? null : repoUrl);
                 <li class="project @(p.Image is null ? "project--glyph" : "")" style="view-transition-name: project-@(transition++)" data-tags="@p.Tags" data-reveal data-tilt data-spot>
                     <div class="project__media" aria-hidden="@(p.Image is null ? "true" : "false")">
                         @if (p.Image is not null)
@@ -58,7 +57,14 @@
                             }
                         </p>
                         <h3 class="project__name">
-                            <a href="@mainUrl" target="_blank" rel="noopener" class="project__link">@p.Name</a>
+                            @if (mainUrl is not null)
+                            {
+                                <a href="@mainUrl" target="_blank" rel="noopener" class="project__link">@p.Name</a>
+                            }
+                            else
+                            {
+                                @p.Name
+                            }
                         </h3>
                         <p class="project__summary">@Model.T(p.Summary)</p>
                         <ul class="chips chips--sm">
@@ -68,7 +74,14 @@
                             }
                         </ul>
                         <div class="project__foot">
-                            <a class="project__repo" href="@repoUrl" target="_blank" rel="noopener">@Icons.GitHub <span>@p.RepoName</span></a>
+                            @if (p.IsPrivate)
+                            {
+                                <span class="project__repo">@Icons.Lock <span>@Model.T("Özel depo", "Private repository")</span></span>
+                            }
+                            else
+                            {
+                                <a class="project__repo" href="@repoUrl" target="_blank" rel="noopener">@Icons.GitHub <span>@p.RepoName</span></a>
+                            }
                             @if (repo is { Stars: > 0 })
                             {
                                 <span class="project__stars" title="GitHub stars">@Icons.Star @repo.Stars</span>
@@ -82,22 +95,5 @@
                 </li>
             }
         </ul>
-
-        <div class="archive">
-            <h3 class="archive__title" data-reveal>@Model.T("Arşivden", "From the archive")</h3>
-            <ul class="archive__list">
-                @foreach (var r in PortfolioContent.Archive)
-                {
-                    <li style="view-transition-name: project-@(transition++)" data-tags="@r.Tags" data-reveal>
-                        <a href="@PortfolioContent.GitHubUrl/@r.RepoName" target="_blank" rel="noopener">
-                            <span class="archive__name">@r.RepoName</span>
-                            <span class="archive__summary">@Model.T(r.Summary)</span>
-                            <span class="archive__lang">@r.Language</span>
-                            @Icons.ArrowUpRight
-                        </a>
-                    </li>
-                }
-            </ul>
-        </div>
     </div>
 </section>

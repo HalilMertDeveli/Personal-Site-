@@ -257,6 +257,7 @@ public static class PortfolioContent
         {
             Name = "ClearPay",
             RepoName = "clearpay",
+            IsPrivate = true,
             Category = new("Fintech · Backend", "Fintech · Backend"),
             Tags = "backend mobile",
             Summary = new(
@@ -264,7 +265,7 @@ public static class PortfolioContent
                 "A demo wallet on one SQL Server double-entry ledger, with an ASP.NET Core 8 web app and a Flutter client. Balance is derived, never updated; transfers are idempotent (replay → 409) and the outbox commits in the same transaction."),
             Stack = [".NET 8", "SQL Server", "Flutter", "Hangfire", "Docker", "CI"],
             Image = new("/img/projects/clearpay-summary.webp", new("ClearPay web uygulaması özet ekranı", "ClearPay web app summary screen"), 960, 733),
-            Status = new(new("Açık kaynak demo", "Open-source demo"), StatusTone.Open)
+            Status = new(new("Demo", "Demo"), StatusTone.Neutral)
         },
         new()
         {
@@ -302,20 +303,6 @@ public static class PortfolioContent
             Stack = ["Kotlin", "Jetpack Compose", "Material 3"],
             Glyph = "android"
         }
-    ];
-
-    /// <summary>Smaller and earlier repositories. Course work is labelled as learning, not presented as product work.</summary>
-    public static readonly IReadOnlyList<ArchiveRepo> Archive =
-    [
-        new("FlutterVpnApp", "Flutter", new("Tasarımını ve kodunu kendim yaptığım VPN arayüzü", "A VPN interface I designed and coded myself"), "mobile"),
-        new("fundemantal_of_biomedical_proejct", "Flutter", new("Okul projesi: hastalar için hatırlatma uygulaması", "School project: a reminder app for patients"), "mobile"),
-        new("Sqflite-Fltuter-App", "Flutter", new("Sqflite ile yerel veri saklama", "Local storage with Sqflite"), "mobile"),
-        new("ASP-NET-E-Trade", "ASP.NET", new("E-ticaret uygulaması", "E-commerce app"), "backend"),
-        new("BankAppAsp", "ASP.NET", new("Bankacılık senaryosu çalışması", "A banking scenario exercise"), "backend"),
-        new("NLayerdApp", "C#", new("N-katmanlı Windows uygulaması", "An N-layer Windows app"), "backend"),
-        new("IdentityCourse", "ASP.NET", new("ASP.NET Identity kurs çalışması", "ASP.NET Identity course work"), "backend learning"),
-        new("AllDesingPatternInBtkC-", "C#", new("BTK Akademi tasarım kalıpları kursu", "BTK Academy design patterns course"), "backend learning"),
-        new("FirebaseChatApp", "Flutter", new("Öğrenme projesi: Firebase ile grup sohbeti kursu", "Learning project: a Firebase group chat course"), "mobile learning")
     ];
 
     public static readonly IReadOnlyList<SkillGroup> Skills =

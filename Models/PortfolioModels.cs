@@ -35,9 +35,6 @@ public sealed record Metric(int Value, string Suffix, Text Label);
 /// <summary>A headline number in the recruiter summary.</summary>
 public sealed record ProofStat(int Value, string Suffix, Text Label);
 
-/// <summary>A smaller or earlier repository, listed as one line.</summary>
-public sealed record ArchiveRepo(string RepoName, string Language, Text Summary, string Tags);
-
 /// <summary>Flagship project rendered as a case study.</summary>
 public sealed class CaseStudy
 {
@@ -73,6 +70,9 @@ public sealed class ProjectCard
 
     /// <summary>Space-separated filter tags.</summary>
     public required string Tags { get; init; }
+
+    /// <summary>The repository is private, so the card shows no source link.</summary>
+    public bool IsPrivate { get; init; }
     public ProjectImage? Image { get; init; }
     public string? Glyph { get; init; }
     public ProjectLink? Live { get; init; }
