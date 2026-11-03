@@ -2562,18 +2562,10 @@ html:not(.js) [data-print] {
   white-space: nowrap;
 }
 
-/* The lead card spans two columns so five cards fill the grid evenly. */
+/* Four project cards read best as a two-by-two grid. */
 @media (min-width: 641px) {
-  .project-grid > .project:first-child {
-    grid-column: span 2;
-    flex-direction: row;
-  }
-
-  .project-grid > .project:first-child .project__media {
-    flex: 0 0 56%;
-    aspect-ratio: auto;
-    border-right: 1px solid var(--line);
-    border-bottom: 0;
+  .project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

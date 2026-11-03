@@ -241,6 +241,32 @@ public static class PortfolioContent
     [
         new()
         {
+            Name = "LEDCare OS",
+            RepoName = "LEDCare-OS",
+            Category = new("Servis platformu · Full-stack", "Service platform · Full-stack"),
+            Tags = "backend web mobile led",
+            Summary = new(
+                "LED ekran teknik servisi için web, mobil ve API'den oluşan servis yönetim platformu: rol bazlı erişim, SignalR ile canlı güncellemeler ve gerçek PostgreSQL üzerinde çalışan testler.",
+                "A service-management platform for LED screen support with a web app, a mobile app and an API: role-based access, live updates over SignalR and tests that run against real PostgreSQL."),
+            Stack = ["ASP.NET Core 10", "PostgreSQL", "SignalR", "Next.js", "Flutter"],
+            Image = new("/img/projects/ledcare-dashboard.webp", new("LEDCare OS müşteri paneli", "LEDCare OS customer dashboard"), 960, 440),
+            Status = new(new("Geliştiriliyor", "In development"), StatusTone.Active)
+        },
+        new()
+        {
+            Name = "ClearPay",
+            RepoName = "clearpay-ledger",
+            Category = new("Fintech · Backend", "Fintech · Backend"),
+            Tags = "backend mobile",
+            Summary = new(
+                "Çift taraflı defter üzerinde ASP.NET Core 8 + Flutter demo cüzdan. Bakiye kayıtlardan türetilir, transferler idempotent (tekrar → 409), audit ve outbox aynı transaction'da. 190 test, SQL Server üzerinde CI.",
+                "A demo wallet on a double-entry ledger with an ASP.NET Core 8 web app and a Flutter client. Balance is derived from entries, transfers are idempotent (replay → 409), and audit and outbox commit in the same transaction. 190 tests, CI on SQL Server."),
+            Stack = [".NET 8", "SQL Server", "xUnit", "Flutter", "GitHub Actions"],
+            Image = new("/img/projects/clearpay-summary.webp", new("ClearPay web uygulaması özet ekranı", "ClearPay web app summary screen"), 960, 733),
+            Status = new(new("Açık kaynak demo", "Open-source demo"), StatusTone.Open)
+        },
+        new()
+        {
             Name = "LED Teknik Destek",
             RepoName = "ASP.NET-APP-FOR-LED",
             Category = new("LED sektörü · Web", "LED industry · Web"),
@@ -255,20 +281,6 @@ public static class PortfolioContent
         },
         new()
         {
-            Name = "ClearPay",
-            RepoName = "clearpay",
-            IsPrivate = true,
-            Category = new("Fintech · Backend", "Fintech · Backend"),
-            Tags = "backend mobile",
-            Summary = new(
-                "Tek bir SQL Server çift taraflı defteri üzerinde ASP.NET Core 8 + Flutter demo cüzdan. Bakiye güncellenmez, kayıtlardan türetilir; transferler idempotent (tekrar → 409), outbox aynı transaction'da.",
-                "A demo wallet on one SQL Server double-entry ledger, with an ASP.NET Core 8 web app and a Flutter client. Balance is derived, never updated; transfers are idempotent (replay → 409) and the outbox commits in the same transaction."),
-            Stack = [".NET 8", "SQL Server", "Flutter", "Hangfire", "Docker", "CI"],
-            Image = new("/img/projects/clearpay-summary.webp", new("ClearPay web uygulaması özet ekranı", "ClearPay web app summary screen"), 960, 733),
-            Status = new(new("Demo", "Demo"), StatusTone.Neutral)
-        },
-        new()
-        {
             Name = "Task Management System",
             RepoName = "TaskManagementSystem",
             Category = new("Bitirme projesi", "Capstone project"),
@@ -278,30 +290,6 @@ public static class PortfolioContent
                 "Onion-architecture ASP.NET Core MVC task manager: Admin and Member roles, MediatR, FluentValidation, EF Core + SQL Server, cookie auth and task reports."),
             Stack = ["ASP.NET Core MVC", "MediatR", "EF Core", "SQL Server"],
             Glyph = "mediator"
-        },
-        new()
-        {
-            Name = "Personal Finance Tracker",
-            RepoName = "personal-Finance-Tracker",
-            Category = new("Mobil", "Mobile"),
-            Tags = "mobile",
-            Summary = new(
-                "Kişisel finans uygulamasının başlangıcı: Flutter ile e-posta, Google ve Facebook girişi, Firestore'da kullanıcı profili. Finans ekranları tamamlanmadı.",
-                "The start of a personal finance app: email, Google and Facebook sign-in with Flutter and a user profile in Firestore. The finance screens were never finished."),
-            Stack = ["Flutter", "Firebase Auth", "Firestore"],
-            Glyph = "finance"
-        },
-        new()
-        {
-            Name = "VPN App · Compose",
-            RepoName = "VPNAppWithCompose",
-            Category = new("Android · Kotlin", "Android · Kotlin"),
-            Tags = "mobile",
-            Summary = new(
-                "Jetpack Compose ve Material 3 ile yazılmış VPN uygulaması arayüz çalışması; aynı arayüzü Flutter'da da kurduğum karşılaştırmalı bir deneme.",
-                "A VPN app interface study in Jetpack Compose and Material 3, built alongside a Flutter version of the same UI as a comparison."),
-            Stack = ["Kotlin", "Jetpack Compose", "Material 3"],
-            Glyph = "android"
         }
     ];
 
