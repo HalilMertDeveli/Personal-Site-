@@ -1,110 +1,83 @@
-# Halil Mert Develi — Yazılım Sitesi
+# Halil Mert Develi — Portfolio
 
-[![.NET](https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
-[![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-Razor_Pages-5C2D91?logo=dotnet)](https://learn.microsoft.com/aspnet/core)
-[![Flutter](https://img.shields.io/badge/Flutter-mobil-02569B?logo=flutter)](https://flutter.dev/)
-[![Kotlin](https://img.shields.io/badge/Kotlin-Android-7F52FF?logo=kotlin)](https://kotlinlang.org/)
+[![Live site](https://img.shields.io/badge/live-halilmertdeveli.com.tr-111?style=flat-square)](https://halilmertdeveli.com.tr)
+[![.NET 8](https://img.shields.io/badge/.NET-8-512BD4?style=flat-square&logo=dotnet)](https://dotnet.microsoft.com/)
 
-Halil Mert Develi'nin kişisel yazılım mühendisi portföyü (TR + EN): **denenebilir ürünler**, depo listesi değil.
-Öne çıkan vaka çalışmaları: **Mevora** (Flutter + Firebase), **LED B2B Platform** (LED ticaret platformu), **Motor** (motosiklet parça mağazası) ve **LED Support Bot** (WhatsApp destek karşılama).
+The source of [halilmertdeveli.com.tr](https://halilmertdeveli.com.tr): a bilingual (Turkish `/`, English `/en`) portfolio built with ASP.NET Core 8 Razor Pages and no front-end framework.
 
----
+## Problem & solution
 
-## Bu repo nedir?
+A list of repositories doesn't tell a recruiter much, and most of my product work lives in private repositories. This site presents each product in plain language with honest status labels, and lets visitors try a small demo of each one instead of only reading about it.
 
-| | |
+## Features
+
+- **LED wall hero** — the name is rasterised onto a dot-matrix canvas that reacts to the pointer and clicks
+- **30-second brief** — a dialog with focus, stack, products and contact details, printable as a PDF
+- **Product panels with demos** — a music-match calculator (Mevora), an LED wall configurator (LED B2B Platform), a fitment search (Motor) and a scripted support conversation (LED Support Bot)
+- **Engineering detail sheets** — problem, contribution, highlights, and built versus planned work for each product
+- **Filterable project grid** and a live GitHub section fed by the GitHub API
+- **Accessible by default** — every effect has a static fallback for `prefers-reduced-motion` and for visitors without JavaScript
+
+## Tech stack
+
+| Area | Choice |
 | --- | --- |
-| **Tür** | Tek sayfa portföy, Türkçe `/` ve İngilizce `/en` |
-| **Framework** | ASP.NET Core 8 · Razor Pages · C# (frontend framework yok) |
-| **UI** | Özel CSS + küçük vanilla JS (LED-matris hero, scroll reveal, `prefers-reduced-motion` desteği) |
-| **İçerik** | Vaka çalışmaları, diğer projeler, hakkımda, yetkinlikler, yolculuk, GitHub, iletişim |
-| **GitHub verisi** | Sunucu tarafında 30 dk önbellekli; API düşerse kayıtlı özet gösterilir |
-| **Canlıya alma** | **Vercel** · canonical: https://halilmertdeveli.com.tr |
+| Server | ASP.NET Core 8, Razor Pages, C# |
+| Front end | Hand-written CSS and vanilla JavaScript (canvas, IntersectionObserver, View Transitions) |
+| Data | Content in `Services/PortfolioContent.cs`; GitHub data from the REST API with a 30-minute memory cache and a static fallback |
+| Hosting | Docker container on Vercel, custom domain |
 
-## Hızlı çalıştır
+## Architecture
 
-### Gereksinim
-- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- veya [Visual Studio 2022](https://visualstudio.microsoft.com/) + *ASP.NET and web development* workload
+```mermaid
+flowchart LR
+    Browser -->|GET / or /en| Index[Index page model]
+    Index --> Content[PortfolioContent<br/>static bilingual content]
+    Index --> GitHub[GitHubService<br/>typed HttpClient + cache]
+    GitHub -->|on failure| Fallback[Static snapshot]
+    Index --> Partials[Razor partials<br/>Pages/Shared/Sections]
+```
 
-### Terminal
+- Every string is a `Text(tr, en)` record, so both languages render from one model.
+- Roadmap items live in separate lists from finished work, so planned features are never shown as shipped.
+- `Program.cs` adds response compression, long-lived caching for versioned assets, security headers and a 404 page.
+
+## Getting started
+
+Requires the [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
 
 ```bash
-dotnet restore
-dotnet run --urls http://0.0.0.0:45217
+dotnet run --urls http://localhost:5199
 ```
 
-Tarayıcı: [http://127.0.0.1:45217](http://127.0.0.1:45217)
+Open http://localhost:5199 (Turkish) or http://localhost:5199/en (English). In Visual Studio, open `Portfolio.csproj` and press F5.
 
-### Visual Studio
+### Configuration
 
-1. Bu klasörü klonla / indir  
-2. Kökteki **`Portfolio.csproj`** dosyasını aç  
-3. **F5** ile çalıştır  
+| Setting | Purpose |
+| --- | --- |
+| `Site__PublicBaseUrl` | Canonical URL used in meta tags and the sitemap |
+| `GitHub__Token` *(optional)* | Raises the GitHub API rate limit; used on the server only |
 
----
+To change content, edit `Services/PortfolioContent.cs`. Images live in `wwwroot/img/`.
 
-## İçeriği güncelleme
+## Testing
 
-Metinlerin ve projelerin tamamı tek dosyada: **`Services/PortfolioContent.cs`**.
-Her metin `new("Türkçe", "English")` şeklinde iki dillidir. Yol haritasındaki işler
-`Roadmap` listesinde tutulur, böylece biten işlerle karışmaz.
+There is no automated test suite. Changes are checked by building in Release and driving the page in a headless browser at desktop and phone sizes, in both languages, with reduced motion and with JavaScript disabled.
 
-- **Portre:** `wwwroot/img/profile/halil-mert-develi.webp` dosyasını aynı adla değiştirmen yeterli (kare, ~460px).
-- **Proje görselleri:** `wwwroot/img/projects/` (WebP).
-- **GitHub token (opsiyonel):** Rate limit için Vercel'de `GitHub__Token` ortam değişkeni tanımlanabilir. Sadece sunucuda kullanılır, tarayıcıya gönderilmez.
+## Deployment
 
----
+Vercel builds `Dockerfile.vercel` (configured in `vercel.json`) on every push to `main`, and pull requests get preview deployments. `Dockerfile` runs the same app on any Docker host. Domain setup is documented in [HOSTING.md](./HOSTING.md).
 
-## Klasör yapısı
+## Project status
 
-```text
-├── Portfolio.csproj              # Visual Studio giriş noktası
-├── Program.cs                    # Pipeline: sıkıştırma, cache, güvenlik başlıkları
-├── Models/                       # İçerik ve GitHub view modelleri
-├── Services/
-│   ├── PortfolioContent.cs       # Tüm portföy içeriği (TR + EN)
-│   ├── GitHubService.cs          # Önbellekli GitHub API + fallback
-│   └── Icons.cs                  # Inline SVG ikonlar
-├── Pages/
-│   ├── Index.cshtml(.cs)         # "/" ve "/en"
-│   └── Shared/Sections/          # Hero, vaka çalışması, projeler… partial'ları
-├── wwwroot/
-│   ├── css/site.css
-│   ├── js/site.js
-│   ├── img/                      # Portre, proje ekranları, OG görseli
-│   ├── robots.txt · sitemap.xml · favicon.svg
-├── Dockerfile                    # Linux VPS / Docker
-├── Dockerfile.vercel             # Vercel container image
-├── vercel.json                   # Vercel service + rewrites
-├── web.config                    # Windows / IIS
-├── deploy/
-├── HOSTING.md                    # Canlıya alma (Vercel + domain)
-└── README.md
-```
+Live at [halilmertdeveli.com.tr](https://halilmertdeveli.com.tr).
 
----
+## Limitations
 
-## Canlıya alma (özet)
+- Content and the headline numbers (commits, tests) are maintained by hand, because most of the source repositories are private.
+- The product demos use illustrative data; they show how each product works, not the private code itself.
 
-- **Canonical domain:** [halilmertdeveli.com.tr](https://halilmertdeveli.com.tr)  
-- **Çalışan şimdilik:** [yazilim-sitesi.vercel.app](https://yazilim-sitesi.vercel.app)  
-- **Dosyalar:** `Dockerfile.vercel` + `vercel.json`  
-- DNS adımları: **[HOSTING.md](./HOSTING.md)**
+## Contact
 
-Detaylı adımlar: **[HOSTING.md](./HOSTING.md)**
-
-```bash
-# Yerel Docker (VPS alternatifi)
-docker build -t hmd-portfolio .
-docker run --rm -p 8080:8080 hmd-portfolio
-```
-
----
-
-## İletişim
-
-**Halil Mert Develi** · İstanbul  
-
-- Mail: [halilmertdeveliii@gmail.com](mailto:halilmertdeveliii@gmail.com)  
-- GitHub: [github.com/HalilMertDeveli](https://github.com/HalilMertDeveli)
+**Halil Mert Develi** · Istanbul — [halilmertdeveliii@gmail.com](mailto:halilmertdeveliii@gmail.com) · [GitHub](https://github.com/HalilMertDeveli) · [LinkedIn](https://www.linkedin.com/in/halil-mert-develi-00983a225/)
