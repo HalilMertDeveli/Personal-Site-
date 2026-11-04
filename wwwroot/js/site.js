@@ -566,6 +566,49 @@
     syncModels();
   });
 
+  /* ---------- Demo: LEDCare OS web to mobile sync ---------- */
+  // Plays the real flow: the web client saves, SignalR announces ids, status and version, and mobile re-fetches.
+  document.querySelectorAll("[data-demo-sync]").forEach((demo) => {
+    const buttons = [...demo.querySelectorAll("[data-status]")];
+    const badge = demo.querySelector("[data-sync-status]");
+    const versionText = demo.querySelector("[data-sync-version]");
+    const log = demo.querySelector("[data-sync-log]");
+    const stale = demo.querySelector("[data-stale]");
+    let version = 1, timer = 0;
+
+    const addLog = (text, tone) => {
+      const line = document.createElement("li");
+      line.textContent = text;
+      if (tone) line.className = `is-${tone}`;
+      log.prepend(line);
+      while (log.children.length > 4) log.lastElementChild.remove();
+    };
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        if (button.getAttribute("aria-pressed") === "true") return;
+        buttons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
+        version += 1;
+        const label = button.textContent.trim();
+        addLog(`PATCH /service-requests/123 → 200 · v${version}`);
+        addLog(`SignalR serviceRequestChanged { status: "${button.dataset.status}", version: ${version} }`, "event");
+        clearTimeout(timer);
+        const refetch = () => {
+          addLog(`GET /service-requests/123 → ${label}`);
+          badge.textContent = label;
+          versionText.textContent = String(version);
+          badge.classList.remove("is-fresh");
+          void badge.offsetWidth;
+          badge.classList.add("is-fresh");
+        };
+        if (animate) timer = setTimeout(refetch, 450);
+        else refetch();
+      });
+    });
+
+    stale.addEventListener("click", () => addLog(`PATCH v${version - 1} → ${demo.dataset.staleLabel}`, "error"));
+  });
+
   /* ---------- Demo: bot conversation ---------- */
   // Without script or with reduced motion the whole conversation is simply shown.
   document.querySelectorAll("[data-demo-bot]").forEach((demo) => {

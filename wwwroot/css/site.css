@@ -2204,6 +2204,134 @@ code {
   opacity: 1;
 }
 
+/* LEDCare OS */
+.demo--sync .browser img {
+  object-position: top;
+}
+
+.sync {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(150px, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.sync__pane,
+.sync__phone {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #0c0e13;
+}
+
+.sync__phone {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  border-radius: 22px;
+}
+
+.sync__label {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sync__title {
+  margin-block: 4px 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.sync__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sync__status {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  font: inherit;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.sync__status:hover {
+  border-color: var(--case);
+  color: var(--text);
+}
+
+.sync__status[aria-pressed="true"] {
+  border-color: var(--case);
+  background: var(--case);
+  color: #0b1220;
+  font-weight: 500;
+}
+
+.sync__stale {
+  margin-top: 10px;
+}
+
+.sync__badge {
+  justify-self: start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--case) 18%, transparent);
+  color: var(--case);
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+
+.sync__badge.is-fresh {
+  animation: fresh 0.9s var(--ease);
+}
+
+@keyframes fresh {
+  from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--case) 60%, transparent); }
+  to { box-shadow: 0 0 0 12px transparent; }
+}
+
+.sync__meta {
+  color: var(--text-3);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.sync__log {
+  display: grid;
+  gap: 4px;
+  min-height: 92px;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #07080b;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.sync__log li {
+  overflow: hidden;
+  color: var(--text-2);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sync__log .is-event {
+  color: var(--case);
+}
+
+.sync__log .is-error {
+  color: #ff9b8a;
+}
+
 /* ---------- Sheets ---------- */
 .sheet {
   width: min(760px, calc(100vw - 24px));
@@ -2645,7 +2773,8 @@ html:not(.js) [data-print] {
     grid-template-columns: 1fr;
   }
 
-  .bot {
+  .bot,
+  .sync {
     grid-template-columns: 1fr;
   }
 

@@ -24,7 +24,7 @@ public static class PortfolioContent
     /// </summary>
     public static readonly IReadOnlyList<ProofStat> ProofStats =
     [
-        new(4, "", new("öne çıkan ürün", "featured products")),
+        new(5, "", new("öne çıkan ürün", "featured products")),
         new(1457, "", new("commit", "commits")),
         new(2600, "+", new("otomatik test tek üründe", "automated tests in one product"))
     ];
@@ -234,6 +234,65 @@ public static class PortfolioContent
             Statuses = [PrivateProject, new(new("Test aşamasında", "In testing"), StatusTone.Active)],
             PrivateNote = new("Kaynak kodu özel bir depoda; müşteri verisi ve bağlantı bilgileri paylaşılmaz.",
                 "The source lives in a private repository; customer data and connection details are not shared.")
+        },
+        new()
+        {
+            Id = "ledcare-os",
+            Name = "LEDCare OS",
+            Demo = "_DemoLedCare",
+            Accent = "--info",
+            Tagline = new(
+                "LED ekranı olan işletmelerin teknik destek talebi açtığı, merkezi servis ekibinin talebi uzaktan ya da sahada çözdüğü servis yönetim platformu: Next.js web, Flutter mobil ve tek bir ASP.NET Core API.",
+                "A service-management platform where businesses with LED screens open support requests and a central service team resolves them remotely or on site: a Next.js web app, a Flutter mobile app and one ASP.NET Core API."),
+            Metrics =
+            [
+                new(24, "", new("API modülü", "API modules")),
+                new(1100, "+", new("otomatik test (API, web, mobil)", "automated tests (API, web, mobile)")),
+                new(6, "", new("rol ile erişim kontrolü", "roles in access control"))
+            ],
+            Problem = new(
+                "LED ekran arızasında müşteri, servis yöneticisi, dispatcher ve teknisyen aynı talebi farklı kanallardan takip ediyor; durum bilgisi telefon ve mesajlarda kayboluyor. LEDCare OS talebi tek yerde toplar ve web ile mobilde aynı anda günceller.",
+                "When an LED screen fails, the customer, service manager, dispatcher and technician follow the same request through different channels, and the status gets lost in calls and messages. LEDCare OS keeps the request in one place and updates it on web and mobile at the same time."),
+            Contribution = new(
+                "Ürünü tek başıma tasarlayıp geliştiriyorum: API modülleri ve PostgreSQL modeli, Next.js web uygulaması, Flutter mobil uygulama, gerçek zamanlı senkronizasyon ve CI hattı.",
+                "I design and build the product on my own: the API modules and PostgreSQL model, the Next.js web app, the Flutter mobile app, realtime sync and the CI pipeline."),
+            Highlights =
+            [
+                new(new("Tek API, iki istemci", "One API, two clients"),
+                    new("Web ve mobil aynı ASP.NET Core 10 API'yi ve PostgreSQL veritabanını kullanır; API 24 modüllü tek bir uygulama olarak dağıtılır.",
+                        "Web and mobile share one ASP.NET Core 10 API and PostgreSQL database; the API ships as a single deployable with 24 modules.")),
+                new(new("Canlı senkronizasyon", "Realtime sync"),
+                    new("SignalR, değişiklikten sonra yalnızca kimlik, durum ve sürüm taşıyan bir serviceRequestChanged olayı yollar; istemciler güncel veriyi REST ile yeniden çeker.",
+                        "After a change, SignalR sends a serviceRequestChanged event carrying only ids, status and version; clients re-fetch the authoritative data over REST.")),
+                new(new("Erişim kontrolü", "Access control"),
+                    new("Servis yöneticisi, dispatcher, uzaktan ve saha teknisyeni, müşteri ve platform yöneticisi rolleri; yetkiler her istekte veritabanından okunur, kapsam dışındaki kayıtlar 404 döner.",
+                        "Service manager, dispatcher, remote and field technician, customer and platform admin roles; access is re-read from the database on every request, and out-of-scope records return 404.")),
+                new(new("Oturum güvenliği", "Session security"),
+                    new("Web'de HttpOnly çerez; mobilde kısa ömürlü erişim token'ı ve hash'lenerek saklanan, tekrar kullanıldığında iptal edilen yenileme token'ı.",
+                        "An HttpOnly cookie on web; on mobile a short-lived access token and a refresh token stored as a hash and revoked on reuse.")),
+                new(new("Eşzamanlılık", "Concurrency"),
+                    new("Güncellemeler PostgreSQL xmin sürümüyle korunur; eski veriyle yapılan bir değişiklik 409 döner.",
+                        "Updates are guarded by PostgreSQL's xmin version; a change based on stale data returns 409.")),
+                new(new("Test ve CI", "Tests and CI"),
+                    new("CI gerçek PostgreSQL üzerinde backend testlerini, sözleşme ve web E2E testlerini, web lint ve tip kontrolünü, Flutter analiz ve testlerini, Android derlemesini ve geçmiş boyunca gizli anahtar taramasını çalıştırır.",
+                        "CI runs backend tests on real PostgreSQL, contract and web E2E tests, web lint and type checks, Flutter analysis and tests, an Android build and a full-history secret scan."))
+            ],
+            Implemented =
+            [
+                new("Servis talebi oluşturma, takip ve durum geçmişi", "Creating and tracking service requests with status history"),
+                new("Rol bazlı web ve mobil ekranlar", "Role-based web and mobile screens"),
+                new("SignalR ile gerçek zamanlı güncellemeler", "Realtime updates over SignalR"),
+                new("Firebase ile mobil bildirim altyapısı", "Mobile push notifications through Firebase")
+            ],
+            Roadmap =
+            [
+                new("Ödeme entegrasyonu", "Payment integration"),
+                new("iOS üzerinde doğrulama", "Verification on iOS"),
+                new("Canlı ortam", "Production hosting")
+            ],
+            Stack = ["ASP.NET Core 10", "EF Core", "PostgreSQL", "SignalR", "Next.js", "React", "TypeScript", "Flutter", "Firebase", "GitHub Actions"],
+            Statuses = [new(new("Açık kaynak", "Open source"), StatusTone.Open), new(new("Aktif geliştirme", "Active development"), StatusTone.Active)],
+            Links = [new(new("Kaynak kodu", "Source code"), "https://github.com/HalilMertDeveli/LEDCare-OS")]
         }
     ];
 

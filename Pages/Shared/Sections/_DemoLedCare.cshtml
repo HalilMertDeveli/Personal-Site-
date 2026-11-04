@@ -1,0 +1,47 @@
+@model IndexModel
+@{
+    // Mirrors ServiceRequestStatus and its Turkish labels in the LEDCare OS API; Cancelled is left out of the demo.
+    var statuses = new (string Key, string Label)[]
+    {
+        ("New", Model.T("Yeni", "New")),
+        ("InReview", Model.T("İnceleniyor", "In review")),
+        ("InProgress", Model.T("İşlemde", "In progress")),
+        ("WaitingForCustomer", Model.T("Müşteri yanıtı bekleniyor", "Waiting for customer")),
+        ("Resolved", Model.T("Çözüldü", "Resolved")),
+        ("Closed", Model.T("Kapatıldı", "Closed"))
+    };
+}
+<div class="demo demo--sync" data-demo-sync data-stale-label="@Model.T("409 Conflict: kayıt bu arada değişti, hiçbir şey yazılmadı", "409 Conflict: the record changed meanwhile, nothing was written")">
+    <p class="demo__kicker"><span class="pulse-dot" aria-hidden="true"></span>@Model.T("Dene: web'de durumu değiştir, mobil anında güncellensin", "Try it: change the status on web, watch mobile update")</p>
+    <div class="browser">
+        <div class="browser__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+        <img src="/img/projects/ledcare-dashboard.webp" width="960" height="440" loading="lazy" decoding="async"
+             alt="@Model.T("LEDCare OS web uygulamasında müşteri talepleri ekranı", "Customer requests screen in the LEDCare OS web app")" />
+    </div>
+
+    <div class="sync">
+        <div class="sync__pane">
+            <p class="sync__label">@Model.T("Web · servis yöneticisi", "Web · service manager")</p>
+            <p class="sync__title">LC-000123 · @Model.T("Modül arızası", "Module fault")</p>
+            <div class="sync__actions" role="group" aria-label="@Model.T("Talep durumu", "Request status")">
+                @for (var i = 0; i < statuses.Length; i++)
+                {
+                    <button type="button" class="sync__status" data-status="@statuses[i].Key" aria-pressed="@(i == 0 ? "true" : "false")">@statuses[i].Label</button>
+                }
+            </div>
+            <button type="button" class="btn btn--ghost btn--sm sync__stale" data-stale>@Model.T("Eski sürümle kaydet", "Save from a stale copy")</button>
+        </div>
+
+        <div class="sync__phone">
+            <p class="sync__label">@Model.T("Mobil · müşteri", "Mobile · customer")</p>
+            <p class="sync__title">LC-000123</p>
+            <p class="sync__badge" role="status" aria-live="polite" data-sync-status>@statuses[0].Label</p>
+            <p class="sync__meta">@Model.T("sürüm", "version") <span data-sync-version>1</span></p>
+        </div>
+    </div>
+
+    <ol class="sync__log" aria-label="@Model.T("Olay akışı", "Event flow")" data-sync-log>
+        <li>@Model.T("Talep alındı · sürüm 1", "Request received · version 1")</li>
+    </ol>
+    <p class="demo__note">@Model.T("Durum adları API'deki gerçek değerlerdir; olay yalnızca kimlik, durum ve sürüm taşır, içerik REST ile yeniden çekilir. Örnek veri.", "The status names are the API's real values; the event carries only ids, status and version, and the content is re-fetched over REST. Sample data.")</p>
+</div>
