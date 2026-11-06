@@ -1,0 +1,45 @@
+name: GitHub Pages
+
+# Site statik HTML olarak üretilip GitHub Pages'ten yayınlanır (ücretsiz).
+# GitHub depo bilgileri her gün yenilensin diye günlük de çalışır.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+      - name: Statik siteyi üret
+        env:
+          GitHub__Token: ${{ secrets.GITHUB_TOKEN }}
+        run: bash scripts/export-static.sh _site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
