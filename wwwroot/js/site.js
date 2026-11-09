@@ -609,6 +609,82 @@
     stale.addEventListener("click", () => addLog(`PATCH v${version - 1} → ${demo.dataset.staleLabel}`, "error"));
   });
 
+  /* ---------- Demo: BayiOS stock reservation ---------- */
+  // Same rules as the product: approval reserves, shipment deducts, cancelling releases, each step is a ledger line.
+  document.querySelectorAll("[data-demo-stock]").forEach((demo) => {
+    const text = demo.dataset;
+    const steps = [...demo.querySelectorAll("[data-step]")];
+    const order = ["approved", "picking", "packed", "shipped"];
+    const status = demo.querySelector("[data-stock-status]");
+    const hand = demo.querySelector("[data-stock-hand]");
+    const reserved = demo.querySelector("[data-stock-reserved]");
+    const available = demo.querySelector("[data-stock-available]");
+    const log = demo.querySelector("[data-stock-log]");
+    const firstLine = log.firstElementChild.textContent;
+    const quantity = 3;
+    let state;
+
+    const addLog = (line, tone) => {
+      const item = document.createElement("li");
+      item.textContent = line;
+      if (tone) item.className = `is-${tone}`;
+      log.prepend(item);
+      while (log.children.length > 4) log.lastElementChild.remove();
+    };
+
+    const render = () => {
+      hand.textContent = String(state.hand);
+      reserved.textContent = String(state.reserved);
+      available.textContent = String(state.hand - state.reserved);
+      const next = order[order.indexOf(state.step) + 1];
+      const finished = state.step === "shipped" || state.step === "cancelled";
+      steps.forEach((button) => {
+        const key = button.dataset.step;
+        button.disabled = finished || (key === "cancelled" ? false : key !== next);
+        button.setAttribute("aria-pressed", String(key === state.step));
+      });
+    };
+
+    const reset = () => {
+      state = { step: "pending", hand: 5, reserved: 0 };
+      status.textContent = text.pendingLabel;
+      log.replaceChildren(Object.assign(document.createElement("li"), { textContent: firstLine }));
+      render();
+    };
+
+    steps.forEach((button) => {
+      button.addEventListener("click", () => {
+        const key = button.dataset.step;
+        if (key === "approved") {
+          state.reserved += quantity;
+          addLog(`${text.ledgerLabel}: ${text.reserveLabel} +${quantity}`, "event");
+        } else if (key === "shipped") {
+          state.hand -= quantity;
+          state.reserved -= quantity;
+          addLog(`${text.ledgerLabel}: ${text.shipLabel} −${quantity} · ${text.handLabel} ${state.hand}`, "event");
+        } else if (key === "cancelled" && state.reserved > 0) {
+          state.reserved -= quantity;
+          addLog(`${text.ledgerLabel}: ${text.releaseLabel} −${quantity}`, "event");
+        }
+        state.step = key;
+        status.textContent = button.dataset.label;
+        addLog(`PATCH /orders/SP-1042 → ${button.dataset.label}`);
+        status.classList.remove("is-fresh");
+        void status.offsetWidth;
+        status.classList.add("is-fresh");
+        render();
+      });
+    });
+
+    demo.querySelector("[data-second]").addEventListener("click", () => {
+      const free = state.hand - state.reserved;
+      if (free < quantity) addLog(text.shortLabel.replace("{n}", String(free)), "error");
+      else addLog(text.secondOkLabel.replace("{n}", String(free)));
+    });
+    demo.querySelector("[data-reset]").addEventListener("click", reset);
+    reset();
+  });
+
   /* ---------- Demo: bot conversation ---------- */
   // Without script or with reduced motion the whole conversation is simply shown.
   document.querySelectorAll("[data-demo-bot]").forEach((demo) => {
