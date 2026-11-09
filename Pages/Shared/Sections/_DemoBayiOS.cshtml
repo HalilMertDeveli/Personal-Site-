@@ -1,0 +1,54 @@
+@model IndexModel
+@{
+    // Mirrors BayiOS's order statuses and their web labels; stock is reserved on approval and leaves at shipment.
+    var steps = new (string Key, string Label, string Action)[]
+    {
+        ("approved", Model.T("Onaylandı", "Approved"), Model.T("Onayla", "Approve")),
+        ("picking", Model.T("Toplanıyor", "Picking"), Model.T("Toplamaya başla", "Start picking")),
+        ("packed", Model.T("Paketlendi", "Packed"), Model.T("Paketle", "Pack")),
+        ("shipped", Model.T("Sevk Edildi", "Shipped"), Model.T("Sevk et", "Ship"))
+    };
+}
+<div class="demo demo--stock" data-demo-stock
+     data-pending-label="@Model.T("Onay Bekliyor", "Pending approval")"
+     data-reserve-label="@Model.T("rezerve", "reserved")"
+     data-ship-label="@Model.T("sevk", "shipped")"
+     data-release-label="@Model.T("rezervasyon bırakıldı", "reservation released")"
+     data-short-label="@Model.T("409 stok yetersiz: satılabilir {n}, istenen 3. Hiçbir şey yazılmadı.", "409 insufficient stock: {n} available, 3 requested. Nothing was written.")"
+     data-second-ok-label="@Model.T("İkinci sipariş onaylanabilir: satılabilir {n}.", "The second order can be approved: {n} available.")"
+     data-hand-label="@Model.T("rafta", "on hand")"
+     data-ledger-label="@Model.T("Defter", "Ledger")">
+    <p class="demo__kicker"><span class="pulse-dot" aria-hidden="true"></span>@Model.T("Dene: siparişi ilerlet, stoğun nasıl değiştiğini izle", "Try it: move the order along and watch the stock")</p>
+    <div class="browser">
+        <div class="browser__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+        <img src="/img/projects/bayios-dashboard.webp" width="960" height="600" loading="lazy" decoding="async"
+             alt="@Model.T("BayiOS web panelinde işletme panosu", "Business dashboard in the BayiOS web panel")" />
+    </div>
+
+    <div class="stock">
+        <div class="stock__order">
+            <p class="sync__label">@Model.T("Sipariş SP-1042 · H4 far ampulü × 3", "Order SP-1042 · H4 bulb × 3")</p>
+            <p class="sync__badge" role="status" aria-live="polite" data-stock-status>@Model.T("Onay Bekliyor", "Pending approval")</p>
+            <div class="sync__actions" role="group" aria-label="@Model.T("Sipariş adımları", "Order steps")">
+                @foreach (var step in steps)
+                {
+                    <button type="button" class="sync__status" data-step="@step.Key" data-label="@step.Label">@step.Action</button>
+                }
+                <button type="button" class="sync__status" data-step="cancelled" data-label="@Model.T("İptal", "Cancelled")">@Model.T("İptal et", "Cancel")</button>
+            </div>
+            <button type="button" class="btn btn--ghost btn--sm sync__stale" data-second>@Model.T("Aynı ürüne ikinci sipariş (3 adet)", "Second order for the same item (3)")</button>
+            <button type="button" class="btn btn--ghost btn--sm sync__stale" data-reset>@Model.T("Baştan başlat", "Start over")</button>
+        </div>
+
+        <dl class="stock__numbers">
+            <div><dt>@Model.T("Rafta", "On hand")</dt><dd data-stock-hand>5</dd></div>
+            <div><dt>@Model.T("Rezerve", "Reserved")</dt><dd data-stock-reserved>0</dd></div>
+            <div><dt>@Model.T("Satılabilir", "Available")</dt><dd data-stock-available>5</dd></div>
+        </dl>
+    </div>
+
+    <ol class="sync__log" aria-label="@Model.T("Stok defteri", "Stock ledger")" data-stock-log>
+        <li>@Model.T("Defter: mal kabul +5 · rafta 5", "Ledger: goods receipt +5 · on hand 5")</li>
+    </ol>
+    <p class="demo__note">@Model.T("Kurallar BayiOS'taki gibidir: onayda rezerve, sevkte düşüm, her adım defterde bir kayıt. Örnek veri.", "The rules match BayiOS: reserve on approval, deduct at shipment, one ledger entry per step. Sample data.")</p>
+</div>

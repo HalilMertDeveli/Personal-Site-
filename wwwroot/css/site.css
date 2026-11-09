@@ -1383,6 +1383,7 @@ code {
    ========================================================================== */
 :root {
   --ember: #ff7a45;
+  --petrol: #3cc6be;
 }
 
 .scroll-progress {
@@ -2332,6 +2333,61 @@ code {
   color: #ff9b8a;
 }
 
+/* BayiOS */
+.demo--stock .browser img {
+  object-position: top;
+}
+
+.stock {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(150px, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.stock__order {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #0c0e13;
+}
+
+.stock__order .sync__stale {
+  margin-top: 0;
+  justify-self: start;
+}
+
+.sync__status:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stock__numbers {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #0c0e13;
+}
+
+.stock__numbers dt {
+  color: var(--text-3);
+  font-size: 0.74rem;
+}
+
+.stock__numbers dd {
+  color: var(--case);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- Sheets ---------- */
 .sheet {
   width: min(760px, calc(100vw - 24px));
@@ -2774,8 +2830,13 @@ html:not(.js) [data-print] {
   }
 
   .bot,
-  .sync {
+  .sync,
+  .stock {
     grid-template-columns: 1fr;
+  }
+
+  .stock__numbers {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .bot__chat {

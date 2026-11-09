@@ -24,7 +24,7 @@ public static class PortfolioContent
     /// </summary>
     public static readonly IReadOnlyList<ProofStat> ProofStats =
     [
-        new(5, "", new("öne çıkan ürün", "featured products")),
+        new(6, "", new("öne çıkan ürün", "featured products")),
         new(1457, "", new("commit", "commits")),
         new(2600, "+", new("otomatik test tek üründe", "automated tests in one product"))
     ];
@@ -291,8 +291,68 @@ public static class PortfolioContent
                 new("Canlı ortam", "Production hosting")
             ],
             Stack = ["ASP.NET Core 10", "EF Core", "PostgreSQL", "SignalR", "Next.js", "React", "TypeScript", "Flutter", "Firebase", "GitHub Actions"],
-            Statuses = [new(new("Açık kaynak", "Open source"), StatusTone.Open), new(new("Aktif geliştirme", "Active development"), StatusTone.Active)],
-            Links = [new(new("Kaynak kodu", "Source code"), "https://github.com/HalilMertDeveli/LEDCare-OS")]
+            Statuses = [PrivateProject, new(new("Aktif geliştirme", "Active development"), StatusTone.Active)],
+            PrivateNote = new("Kaynak kodu özel bir depoda; burada ürün ve mühendislik özeti yer alıyor.",
+                "The source lives in a private repository; this is a product and engineering summary.")
+        },
+        new()
+        {
+            Id = "bayios",
+            Name = "BayiOS",
+            Demo = "_DemoBayiOS",
+            Accent = "--petrol",
+            Tagline = new(
+                "Motosiklet parçası, LED ve elektronik gibi ürün satan toptancılar için çok kiracılı B2B stok, depo ve sipariş yönetimi: ofis için web paneli, depo için mobil uygulama, tek bir API.",
+                "Multi-tenant B2B stock, warehouse and order management for distributors of motorcycle parts, LED and electronics and similar goods: a web panel for the office, a mobile app for the warehouse, one API."),
+            Metrics =
+            [
+                new(13, "", new("API modülü", "API modules")),
+                new(2200, "+", new("otomatik test (API, web, mobil)", "automated tests (API, web, mobile)")),
+                new(6, "", new("rol ile yetkilendirme", "roles in authorization"))
+            ],
+            Problem = new(
+                "Toptancılar siparişi WhatsApp'tan alıyor, stoğu güncel olmayan bir Excel'den kontrol ediyor ve ürünün bir saat önce başkasına satıldığını rafta öğreniyor. BayiOS her stok hareketini kayda bağlar ve aynı ürünün iki kez satılmasını engeller.",
+                "Distributors take orders over WhatsApp, check stock in an out-of-date spreadsheet and find out at the shelf that the item was sold an hour ago. BayiOS ties every stock change to a ledger entry and stops the same item being sold twice."),
+            Contribution = new(
+                "Ürünü tek başıma tasarlayıp geliştiriyorum: modüler ASP.NET Core API, PostgreSQL şeması ve satır düzeyi güvenlik, Next.js web paneli, Flutter depo uygulaması, WhatsApp sipariş asistanı ve CI/CD hattı.",
+                "I design and build the product on my own: the modular ASP.NET Core API, the PostgreSQL schema with row-level security, the Next.js web panel, the Flutter warehouse app, the WhatsApp order assistant and the CI/CD pipeline."),
+            Highlights =
+            [
+                new(new("Stok defteri", "Stock ledger"),
+                    new("Her stok değişikliği yalnızca eklenen bir defter kaydıdır; bakiyeler aynı veritabanı işleminde bu kayıtlardan türetilir, ekrandaki her sayı açıklanabilir.",
+                        "Every stock change is an append-only ledger entry; balances are derived from it in the same database transaction, so every number on screen can be explained.")),
+                new(new("Rezervasyon ve eşzamanlılık", "Reservation and concurrency"),
+                    new("Stok sipariş onaylanınca rezerve edilir, sevkte düşer. Bakiye satırları sabit sırayla SELECT … FOR UPDATE ile kilitlenir; paralel istekler gerçek PostgreSQL'e karşı test edilir.",
+                        "Stock is reserved when an order is approved and leaves at shipment. Balance rows are locked with SELECT … FOR UPDATE in a fixed order, and parallel requests are tested against real PostgreSQL.")),
+                new(new("Çok kiracılı güvenlik", "Multi-tenant security"),
+                    new("Kiracı kimliği oturumdan çözülür; API tablo sahibi olmayan bir veritabanı rolüyle bağlanır ve her tabloda satır düzeyi güvenlik (RLS) vardır. Eksik RLS derlemeyi kırar.",
+                        "The tenant comes from the authenticated membership; the API connects as a database role that does not own the tables, and every table has row-level security. A missing policy fails the build.")),
+                new(new("Yetki ve paket ayrımı", "Permissions and entitlements"),
+                    new("Altı rol için izin ve işletmenin paketi ayrı ayrı kontrol edilir; güvenlik, stok doğruluğu ve veri dışa aktarma hiçbir pakette kilitlenmez.",
+                        "Permission for six roles and the business's plan are checked separately; security, stock accuracy and data export are never locked behind a plan.")),
+                new(new("WhatsApp sipariş asistanı", "WhatsApp order assistant"),
+                    new("Yapıştırılan mesajı arka planda ayrıştırır, satırları katalogla kurallara göre eşleştirir; fiyat, stok veya ürün kodu uydurmaz, her satırı bir kişi onaylar. Varsayılan olarak kapalıdır.",
+                        "Parses a pasted message in the background and matches lines against the catalogue with deterministic rules; it never invents prices, stock or codes, and a person confirms every line. Off by default.")),
+                new(new("Test ve CI", "Tests and CI"),
+                    new("CI'da API testleri gerçek PostgreSQL üzerinde, web birim ve uçtan uca testleri, Flutter testleri, migration ve container kontrolleri, CodeQL ve gizli anahtar taraması çalışır.",
+                        "CI runs API tests on real PostgreSQL, web unit and end-to-end tests, Flutter tests, migration and container checks, CodeQL and a secret scan."))
+            ],
+            Implemented =
+            [
+                new("Katalog, fiyat listeleri ve Excel/CSV içe aktarma", "Catalogue, price lists and Excel/CSV import"),
+                new("Sipariş yaşam döngüsü ve stok rezervasyonu", "Order lifecycle and stock reservation"),
+                new("Barkodlu toplama yapan Flutter depo uygulaması", "Flutter warehouse app with barcode picking"),
+                new("Raporlar ve CSV/Excel dışa aktarma", "Reports with CSV/Excel export")
+            ],
+            Roadmap =
+            [
+                new("İlk canlı pilot", "First live pilot"),
+                new("Stok transferi ve sayım", "Stock transfer and counting"),
+                new("iOS dağıtımı", "iOS distribution")
+            ],
+            Stack = [".NET 10", "ASP.NET Core", "PostgreSQL", "Supabase", "Next.js", "React", "TypeScript", "Flutter", "Claude API", "GitHub Actions"],
+            Statuses = [new(new("Açık kaynak", "Open source"), StatusTone.Open), new(new("Canlı öncesi", "Pre-production"), StatusTone.Active)],
+            Links = [new(new("Kaynak kodu", "Source code"), "https://github.com/HalilMertDeveli/BayiOS")]
         }
     ];
 
@@ -302,6 +362,7 @@ public static class PortfolioContent
         {
             Name = "LEDCare OS",
             RepoName = "LEDCare-OS",
+            IsPrivate = true,
             Category = new("Servis platformu · Full-stack", "Service platform · Full-stack"),
             Tags = "backend web mobile led",
             Summary = new(
