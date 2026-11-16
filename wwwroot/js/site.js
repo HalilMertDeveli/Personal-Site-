@@ -685,6 +685,63 @@
     reset();
   });
 
+  /* ---------- Demo: Dilbaz Turkish mistake detector ---------- */
+  // Ports six of the app's rules (lib/core/tr_errors.dart) with the same patterns and fixes.
+  document.querySelectorAll("[data-demo-tr]").forEach((demo) => {
+    const input = demo.querySelector("[data-tr-input]");
+    const result = demo.querySelector("[data-tr-result]");
+    const notes = Object.fromEntries([...demo.querySelectorAll("[data-rule]")].map((li) => [li.dataset.rule, li]));
+    const thirdSingular = /^(he|she|everyone|everybody)$/i;
+    const rules = [
+      ["be_agree", /\b(I|you|we|they|he|she|people|everyone|everybody)(\s+am|\s+are|\s+is|'m|'re|'s|\s+was|\s+were)\s+agree\b/i,
+        (m) => `${m[1]} ${/was|were/i.test(m[2]) ? "agreed" : thirdSingular.test(m[1]) ? "agrees" : "agree"}`],
+      ["it_depends", /\b(it's|it is|that's|that is)\s+depends?\b/i,
+        (m) => `${m[1].toLowerCase().startsWith("it") ? "it" : "that"} depends`],
+      ["listen_to", /\b(listen|listens|listened|listening)\s+(music|the radio|radio|songs?|the song|podcasts?|me|him|her|them|us|you|it|my \w+|this|that|the teacher|the news)\b/i,
+        (m) => `${m[1]} to ${m[2]}`],
+      ["married_with", /\b(married|engaged)\s+with\b(?!\s+(?:two|three|four|\d|a\s+(?:child|kid|son|daughter|baby)|children|kids|no)\b)/i,
+        (m) => `${m[1]} to`],
+      ["explain_me", /\bexplain(s|ed|ing)?\s+(me|us)\b(?:\s+([\w' ]+?)(?=\s*[.!?,]|\s*$))?/i,
+        (m) => (m[3] == null ? `explain${m[1] ?? ""} to ${m[2]}` : `explain${m[1] ?? ""} ${m[3]} to ${m[2]}`)],
+      ["before_ago", /\bbefore\s+((?:\d+|a|an|one|two|three|four|five|six|seven|eight|nine|ten|a few|few|many|several)\s+(?:years?|months?|weeks?|days?|hours?|minutes?))\b/i,
+        (m) => `${m[1]} ago`],
+    ];
+
+    const check = () => {
+      const sentence = input.value.trim();
+      const hit = rules.map(([id, pattern, fix]) => [id, sentence.match(pattern), fix]).find(([, m]) => m);
+      result.replaceChildren();
+      result.classList.toggle("is-clean", !hit);
+      if (!hit) {
+        result.append(Object.assign(document.createElement("p"), { className: "tr__why", textContent: demo.dataset.noneLabel }));
+        return;
+      }
+      const [id, m, fix] = hit;
+      let fixed = sentence.slice(0, m.index) + fix(m) + sentence.slice(m.index + m[0].length);
+      fixed = fixed.charAt(0).toUpperCase() + fixed.slice(1);
+      const line = Object.assign(document.createElement("p"), { className: "tr__fix" });
+      line.append(Object.assign(document.createElement("span"), { textContent: demo.dataset.fixLabel }), fixed);
+      result.append(
+        line,
+        Object.assign(document.createElement("p"), { className: "tr__category", textContent: notes[id].dataset.category }),
+        Object.assign(document.createElement("p"), { className: "tr__why", textContent: notes[id].textContent }),
+      );
+    };
+
+    let timer = 0;
+    input.addEventListener("input", () => {
+      clearTimeout(timer);
+      timer = setTimeout(check, 180);
+    });
+    demo.querySelectorAll("[data-example]").forEach((button) => {
+      button.addEventListener("click", () => {
+        input.value = button.dataset.example;
+        check();
+      });
+    });
+    check();
+  });
+
   /* ---------- Demo: bot conversation ---------- */
   // Without script or with reduced motion the whole conversation is simply shown.
   document.querySelectorAll("[data-demo-bot]").forEach((demo) => {
@@ -802,6 +859,8 @@
 
     const rasterise = () => {
       mask = new Uint8Array(cols * rows);
+      // A hidden or zero-sized window has nothing to draw, and getImageData rejects an empty area.
+      if (!cols || !rows) return;
       const lines = w < 640 ? ["HALİL", "MERT", "DEVELİ"] : ["HALİL MERT", "DEVELİ"];
       const wallRect = wall.getBoundingClientRect();
       const copyTop = copy.getBoundingClientRect().top - wallRect.top;
