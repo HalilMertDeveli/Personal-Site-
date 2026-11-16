@@ -24,13 +24,71 @@ public static class PortfolioContent
     /// </summary>
     public static readonly IReadOnlyList<ProofStat> ProofStats =
     [
-        new(6, "", new("öne çıkan ürün", "featured products")),
+        new(7, "", new("öne çıkan ürün", "featured products")),
         new(1457, "", new("commit", "commits")),
         new(2600, "+", new("otomatik test tek üründe", "automated tests in one product"))
     ];
 
     public static readonly IReadOnlyList<CaseStudy> CaseStudies =
     [
+        new()
+        {
+            Id = "dilbaz",
+            Name = "Dilbaz",
+            Demo = "_DemoDilbaz",
+            Accent = "--terracotta",
+            Tagline = new(
+                "Türkçe konuşanlar için İngilizce öğrenme uygulaması: her yanlışın arkasındaki Türkçe alışkanlığı gösterir, A1'den C1'e bir öğrenme yolu ile YDS/YÖKDİL ve LGS hazırlığını bir arada sunar. Can yok, ceza yok, reklam yok.",
+                "An English learning app for Turkish speakers: it shows the Turkish habit behind each mistake and combines an A1-to-C1 learning path with YDS/YÖKDİL and LGS exam preparation. No lives, no penalties, no ads."),
+            Metrics =
+            [
+                new(106, "", new("Türkçe kaynaklı hata kuralı", "Turkish-origin mistake rules")),
+                new(14000, "+", new("alıştırma ve soru", "exercises and questions")),
+                new(1000, "+", new("otomatik test", "automated tests"))
+            ],
+            Problem = new(
+                "Yaygın dil uygulamaları herkese aynı dersi verir, oysa Türk öğrenci Türkçe yapıdan gelen aynı birkaç hatayı tekrar tekrar yapar: \"I am agree\", \"I have 20 years\", \"listen music\". Dilbaz bu hataları yakalayıp nedenini Türkçe anlatır.",
+                "Mainstream language apps teach everyone the same lessons, yet Turkish learners keep repeating a few mistakes that come from Turkish grammar: \"I am agree\", \"I have 20 years\", \"listen music\". Dilbaz catches these mistakes and explains why in Turkish."),
+            Contribution = new(
+                "Uygulamayı tek başıma tasarlayıp geliştiriyorum: Flutter istemcisi, öğrenme yolu ve tekrar mantığı, Türk hata dedektörü, Firebase ve TypeScript Cloud Functions sunucusu, içerik denetim testleri ve CI/CD.",
+                "I design and build the app on my own: the Flutter client, the learning path and review logic, the Turkish mistake detector, the Firebase and TypeScript Cloud Functions backend, the content-checking tests and CI/CD."),
+            Highlights =
+            [
+                new(new("Türk hata dedektörü", "Turkish mistake detector"),
+                    new("106 kural, yazılan cümledeki Türkçe kaynaklı hatayı yakalar, düzeltilmiş cümleyi önerir ve neden yanlış olduğunu Türkçe açıklar.",
+                        "106 rules catch the Turkish-origin mistake in a sentence, suggest the corrected sentence and explain in Turkish why it is wrong.")),
+                new(new("Yerel önce", "Local first"),
+                    new("Bütün öğrenme cihazda çalışır ve internet gerektirmez; Firebase açılamazsa uygulama yerel modda devam eder. Sunucu eşitleme, lig, yapay zekâ ve satın alma için kullanılır.",
+                        "All learning runs on the device without a connection; if Firebase is unavailable the app carries on in local mode. The server handles sync, leagues, AI features and purchases.")),
+                new(new("Cezasız öğrenme", "Learning without penalties"),
+                    new("Can sistemi yok: yanlış cevap durdurmaz, soru sonra yeniden gelir ve hata defterine düşer.",
+                        "There are no lives: a wrong answer doesn't stop you, the question comes back later and lands in the mistake notebook.")),
+                new(new("Güvenli yapay zekâ", "AI kept on the server"),
+                    new("Rol yapma sohbeti ve yazma değerlendirmesi Cloud Functions'ta Claude API ile çalışır; anahtar yalnızca sunucuda tutulur, kotalar ve satın alma doğrulaması sunucuda uygulanır.",
+                        "Role-play chat and writing feedback run in Cloud Functions on the Claude API; the key stays on the server, and quotas and purchase verification are enforced there.")),
+                new(new("İçerik denetimi", "Content checks"),
+                    new("Testler her içerik dosyasını denetler: benzersiz kimlikler, cevabın şıklar arasında olması, cevabı ele veren ipuçları ve yayındaki bölümlerin değişmemesi.",
+                        "Tests check every content file: unique ids, answers present among the options, hints that give the answer away, and published units staying unchanged.")),
+                new(new("Test ve CI", "Tests and CI"),
+                    new("CI her değişiklikte format, analiz ve Flutter testlerini, Firebase emülatöründe sunucu testlerini ve Android emülatöründe uçtan uca giriş testlerini çalıştırır; ana dalda APK derlenir.",
+                        "On every change CI runs format, analysis and Flutter tests, server tests on the Firebase emulator and end-to-end sign-in tests on an Android emulator; the main branch builds an APK."))
+            ],
+            Implemented =
+            [
+                new("A1'den C1'e Genel İngilizce yolu", "General English path from A1 to C1"),
+                new("52 haftalık YDS/YÖKDİL programı ve LGS hazırlığı", "52-week YDS/YÖKDİL programme and LGS preparation"),
+                new("Lig, hata defteri ve aralıklı tekrar", "League, mistake notebook and spaced review"),
+                new("Premium, aile ve kurum planları için sunucu altyapısı", "Server side for Premium, family and organisation plans")
+            ],
+            Roadmap =
+            [
+                new("Google Play'de yayın", "Release on Google Play"),
+                new("iOS dağıtımı", "iOS distribution")
+            ],
+            Stack = ["Flutter", "Dart", "Riverpod", "Firebase", "Cloud Functions · TypeScript", "Claude API", "Google Play Billing", "GitHub Actions"],
+            Statuses = [new(new("Açık kaynak", "Open source"), StatusTone.Open), new(new("Yayın öncesi", "Pre-release"), StatusTone.Active)],
+            Links = [new(new("Kaynak kodu", "Source code"), "https://github.com/HalilMertDeveli/lingora")]
+        },
         new()
         {
             Id = "mevora",

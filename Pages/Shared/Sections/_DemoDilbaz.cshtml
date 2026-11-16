@@ -1,0 +1,60 @@
+@model IndexModel
+@{
+    // Six of Dilbaz's 106 rules (lib/core/tr_errors.dart), with the app's own example sentences and explanations.
+    var rules = new (string Id, string Category, string Example, string Explanation)[]
+    {
+        ("be_agree", Model.T("be fiili", "to be"), "I am agree with you.",
+            Model.T("\"agree\" zaten bir fiil: \"katılıyorum\" demek. Türkçedeki \"-im\" ekini \"am\" ile karşılamaya gerek yok; \"I agree\" yeterli.",
+                    "\"agree\" is already a verb meaning \"I agree\". The Turkish \"-im\" ending doesn't need an \"am\": \"I agree\" is enough.")),
+        ("it_depends", Model.T("be fiili", "to be"), "It's depend on the weather.",
+            Model.T("\"depend\" bir fiil, önüne \"is\" gelmez. Türkçedeki \"duruma bağlı\" sıfat gibi düşünülse de İngilizcede \"It depends\" denir.",
+                    "\"depend\" is a verb, so it takes no \"is\". The Turkish \"duruma bağlı\" feels like an adjective, but English says \"It depends\".")),
+        ("listen_to", Model.T("Edat", "Preposition"), "I listen music every evening.",
+            Model.T("Türkçede \"müzik dinlemek\" doğrudan nesne alır. İngilizcede \"listen\" her zaman \"to\" ister: \"listen to music\".",
+                    "In Turkish \"müzik dinlemek\" takes a direct object. In English \"listen\" always needs \"to\": \"listen to music\".")),
+        ("married_with", Model.T("Edat", "Preposition"), "She is married with a doctor.",
+            Model.T("Türkçedeki \"biriyle evli\" ifadesindeki \"ile\" yüzünden \"with\" kullanılır; İngilizcede \"married to\" denir.",
+                    "The \"ile\" in the Turkish \"biriyle evli\" leads to \"with\"; English says \"married to\".")),
+        ("explain_me", Model.T("Edat", "Preposition"), "Can you explain me this rule?",
+            Model.T("Türkçede \"bana açıkla\" -e ekiyle söylenir ve İngilizcede de karşılığı \"to me\" olur: \"explain it to me\".",
+                    "Turkish says \"bana açıkla\" with the -e ending, and in English that becomes \"to me\": \"explain it to me\".")),
+        ("before_ago", Model.T("Edat", "Preposition"), "I moved here before two years.",
+            Model.T("Türkçedeki \"iki yıl önce\" kelimesi kelimesine \"before two years\" olur. İngilizcede şimdiden geriye sayarken \"two years ago\" denir.",
+                    "The Turkish \"iki yıl önce\" becomes \"before two years\" word for word. Counting back from now, English says \"two years ago\"."))
+    };
+}
+<div class="demo demo--dilbaz" data-demo-tr
+     data-none-label="@Model.T("Bu demodaki altı kuraldan hiçbiri eşleşmedi. Uygulamada 106 kural var.", "None of the six rules in this demo matched. The app has 106.")"
+     data-fix-label="@Model.T("Doğrusu", "Correct")">
+    <p class="demo__kicker"><span class="pulse-dot" aria-hidden="true"></span>@Model.T("Dene: İngilizce bir cümle yaz, Türkçe kaynaklı hatayı yakalasın", "Try it: type an English sentence and catch the Turkish-origin mistake")</p>
+    <div class="tr">
+        <figure class="tr__phone">
+            <img src="/img/projects/dilbaz-path.webp" width="360" height="800" loading="lazy" decoding="async"
+                 alt="@Model.T("Dilbaz öğrenme yolu ekranı: çay bardağı düğümleriyle ilk ünite", "Dilbaz learning path screen with tea-glass nodes in the first unit")" />
+        </figure>
+        <div class="tr__main">
+            <label class="tr__field">
+                <span class="sync__label">@Model.T("Cümlen", "Your sentence")</span>
+                <input type="text" value="@rules[0].Example" maxlength="140" spellcheck="false" autocomplete="off" data-tr-input />
+            </label>
+            <div class="sync__actions" role="group" aria-label="@Model.T("Örnek cümleler", "Example sentences")">
+                @foreach (var rule in rules)
+                {
+                    <button type="button" class="sync__status" data-example="@rule.Example">@rule.Example</button>
+                }
+            </div>
+            <div class="tr__result" role="status" aria-live="polite" data-tr-result>
+                <p class="tr__fix"><span>@Model.T("Doğrusu", "Correct")</span> I agree with you.</p>
+                <p class="tr__category">@rules[0].Category</p>
+                <p class="tr__why">@rules[0].Explanation</p>
+            </div>
+            <ul hidden>
+                @foreach (var rule in rules)
+                {
+                    <li data-rule="@rule.Id" data-category="@rule.Category">@rule.Explanation</li>
+                }
+            </ul>
+        </div>
+    </div>
+    <p class="demo__note">@Model.T("Kurallar, örnekler ve açıklamalar uygulamanın kendisinden alındı; burada 106 kuralın altısı var.", "The rules, examples and explanations come from the app itself; six of its 106 rules are here.")</p>
+</div>
