@@ -34,7 +34,7 @@ public static class PortfolioContent
         new()
         {
             Id = "dilbaz",
-            Name = "Dilbaz",
+            Name = "Çenebaz",
             Demo = "_DemoDilbaz",
             Accent = "--terracotta",
             Tagline = new(
@@ -44,11 +44,11 @@ public static class PortfolioContent
             [
                 new(106, "", new("Türkçe kaynaklı hata kuralı", "Turkish-origin mistake rules")),
                 new(14000, "+", new("alıştırma ve soru", "exercises and questions")),
-                new(1000, "+", new("otomatik test", "automated tests"))
+                new(2100, "+", new("otomatik test", "automated tests"))
             ],
             Problem = new(
-                "Yaygın dil uygulamaları herkese aynı dersi verir, oysa Türk öğrenci Türkçe yapıdan gelen aynı birkaç hatayı tekrar tekrar yapar: \"I am agree\", \"I have 20 years\", \"listen music\". Dilbaz bu hataları yakalayıp nedenini Türkçe anlatır.",
-                "Mainstream language apps teach everyone the same lessons, yet Turkish learners keep repeating a few mistakes that come from Turkish grammar: \"I am agree\", \"I have 20 years\", \"listen music\". Dilbaz catches these mistakes and explains why in Turkish."),
+                "Yaygın dil uygulamaları herkese aynı dersi verir, oysa Türk öğrenci Türkçe yapıdan gelen aynı birkaç hatayı tekrar tekrar yapar: \"I am agree\", \"I have 20 years\", \"listen music\". Çenebaz bu hataları yakalayıp nedenini Türkçe anlatır.",
+                "Mainstream language apps teach everyone the same lessons, yet Turkish learners keep repeating a few mistakes that come from Turkish grammar: \"I am agree\", \"I have 20 years\", \"listen music\". Çenebaz catches these mistakes and explains why in Turkish."),
             Contribution = new(
                 "Uygulamayı tek başıma tasarlayıp geliştiriyorum: Flutter istemcisi, öğrenme yolu ve tekrar mantığı, Türk hata dedektörü, Firebase ve TypeScript Cloud Functions sunucusu, içerik denetim testleri ve CI/CD.",
                 "I design and build the app on my own: the Flutter client, the learning path and review logic, the Turkish mistake detector, the Firebase and TypeScript Cloud Functions backend, the content-checking tests and CI/CD."),
@@ -78,15 +78,16 @@ public static class PortfolioContent
                 new("A1'den C1'e Genel İngilizce yolu", "General English path from A1 to C1"),
                 new("52 haftalık YDS/YÖKDİL programı ve LGS hazırlığı", "52-week YDS/YÖKDİL programme and LGS preparation"),
                 new("Lig, hata defteri ve aralıklı tekrar", "League, mistake notebook and spaced review"),
+                new("Google Play kapalı testi (Kasım 2026)", "Google Play closed testing (November 2026)"),
                 new("Premium, aile ve kurum planları için sunucu altyapısı", "Server side for Premium, family and organisation plans")
             ],
             Roadmap =
             [
-                new("Google Play'de yayın", "Release on Google Play"),
+                new("Google Play'de herkese açık yayın", "Public release on Google Play"),
                 new("iOS dağıtımı", "iOS distribution")
             ],
             Stack = ["Flutter", "Dart", "Riverpod", "Firebase", "Cloud Functions · TypeScript", "Claude API", "Google Play Billing", "GitHub Actions"],
-            Statuses = [new(new("Açık kaynak", "Open source"), StatusTone.Open), new(new("Yayın öncesi", "Pre-release"), StatusTone.Active)],
+            Statuses = [new(new("Google Play · kapalı test", "Google Play · closed testing"), StatusTone.Active), new(new("Açık kaynak", "Open source"), StatusTone.Open)],
             Links = [new(new("Kaynak kodu", "Source code"), "https://github.com/HalilMertDeveli/lingora")]
         },
         new()
